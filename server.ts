@@ -34,5 +34,6 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/", router);
-var server = (<any>http).createServer(app);
-server.listen(23548);
+var server: any = http.createServer(<any>app);
+var port = process.env.PORT || 9999;
+server.listen(port);
