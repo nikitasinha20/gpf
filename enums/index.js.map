@@ -1,0 +1,1 @@
+{"version":3,"sources":["enums/index.ts"],"names":[],"mappings":";AACA,gCAAqB,mBAAmB,CAAC;AAAjC,0CAAiC","file":"index.js","sourcesContent":["\nexport {Strict} from './document-strict';"]}
