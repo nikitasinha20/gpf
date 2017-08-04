@@ -63,5 +63,4 @@ course = __decorate([
 exports.course = course;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = course;
-
 //# sourceMappingURL=course.js.map

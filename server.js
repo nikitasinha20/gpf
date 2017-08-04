@@ -32,6 +32,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use("/", exports_1.router);
 var server = http.createServer(app);
-server.listen(23548);
-
+var port = process.env.PORT || 9999;
+server.listen(port);
 //# sourceMappingURL=server.js.map

@@ -19,5 +19,4 @@ CourseRepository = __decorate([
 ], CourseRepository);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CourseRepository;
-
 //# sourceMappingURL=courseRepository.js.map

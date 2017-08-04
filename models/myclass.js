@@ -38,5 +38,4 @@ myclass = __decorate([
 exports.myclass = myclass;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = myclass;
-
 //# sourceMappingURL=myclass.js.map

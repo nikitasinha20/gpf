@@ -37,5 +37,4 @@ tag = __decorate([
 exports.tag = tag;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = tag;
-
 //# sourceMappingURL=tag.js.map

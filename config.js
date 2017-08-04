@@ -1,8 +1,8 @@
 "use strict";
 class Config {
 }
-Config.DbConnection = "mongodb://abcd1234:abcd1234@ds028310.mlab.com:28310/gpf";
-// public static DbConnection: string = "mongodb://localhost:27017/gpf";
+// public static DbConnection: string = "mongodb://abcd1234:abcd1234@ds028310.mlab.com:28310/gpf";
+Config.DbConnection = "mongodb://localhost:27017/gpf";
 Config.basePath = "data";
 Config.apiversion = "v1";
 Config.ElasticSearchConnection = "http://localhost:9200";
@@ -34,5 +34,4 @@ Security.isAutheticationEnabled = "disabled"; //allowed values: "disabled","enab
 Security.authenticationType = "TokenBased"; //allowed values: "passwordBased","TokenBased"
 Security.useFaceBookAuth = false;
 exports.Security = Security;
-
 //# sourceMappingURL=config.js.map

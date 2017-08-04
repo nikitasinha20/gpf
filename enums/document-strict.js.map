@@ -1,1 +1,0 @@
-{"version":3,"sources":["enums/document-strict.ts"],"names":[],"mappings":";AAAA,WAAY,MAAM;IACd,qCAAK,CAAA;IACL,mCAAI,CAAA;IACJ,qCAAK,CAAA;AACT,CAAC,EAJW,cAAM,KAAN,cAAM,QAIjB;AAJD,IAAY,MAAM,GAAN,cAIX,CAAA","file":"document-strict.js","sourcesContent":["export enum Strict {\n    false,\n    true,\n    throw\n}"]}

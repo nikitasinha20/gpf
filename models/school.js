@@ -12,17 +12,46 @@ const decorators_1 = require('nodedata/mongoose/decorators');
 const _1 = require('nodedata/mongoose/enums/');
 const baseModel_1 = require('./baseModel');
 const teacher_1 = require('./teacher');
+const myclass_1 = require('./myclass');
 const decorators_2 = require('nodedata/core/decorators');
 let school = class school extends baseModel_1.baseModel {
 };
 __decorate([
     decorators_1.field(), 
     __metadata('design:type', String)
-], school.prototype, "age", void 0);
+], school.prototype, "school_name", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], school.prototype, "center", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], school.prototype, "school_id", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], school.prototype, "principal", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], school.prototype, "disctrict", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], school.prototype, "block", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], school.prototype, "cluster", void 0);
 __decorate([
     decorators_2.onetomany({ rel: 'teacher', itemType: teacher_1.teacher, embedded: true, persist: true, eagerLoading: false }), 
     __metadata('design:type', Array)
 ], school.prototype, "teachers", void 0);
+__decorate([
+    decorators_2.onetomany({ rel: 'myclass', itemType: myclass_1.myclass, embedded: true, persist: true, eagerLoading: false }), 
+    __metadata('design:type', Array)
+], school.prototype, "classes", void 0);
 school = __decorate([
     decorators_1.document({ name: 'school', strict: _1.Strict.throw }), 
     __metadata('design:paramtypes', [])
@@ -30,5 +59,4 @@ school = __decorate([
 exports.school = school;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = school;
-
 //# sourceMappingURL=school.js.map
