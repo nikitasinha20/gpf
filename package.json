@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "npm i -g typescript", //since tsc doesn't run locally
+    "preinstall": "npm i -g typescript",
     "postinstall": "tsc"
   },
   "author": "",
