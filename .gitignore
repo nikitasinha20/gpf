@@ -1,6 +1,4 @@
 node_modules/**
-**/*.js.map
-**/*.js
 typings/**/*.*
 npm-debug.log
 nodedataLog.log
