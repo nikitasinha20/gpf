@@ -51,4 +51,5 @@ mycollection = __decorate([
 exports.mycollection = mycollection;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = mycollection;
+
 //# sourceMappingURL=mycollection.js.map

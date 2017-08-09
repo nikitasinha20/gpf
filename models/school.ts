@@ -5,6 +5,7 @@ import {Strict} from 'nodedata/mongoose/enums/';
 import {baseModel} from './baseModel';
 import {teacher} from './teacher';
 import {myclass} from './myclass';
+import {term} from './term';
 import {onetomany, manytoone, manytomany, onetoone} from 'nodedata/core/decorators';
 
 @document({ name: 'school', strict: Strict.throw })
@@ -31,11 +32,14 @@ export class school extends baseModel {
     @field()
     cluster: string;
 
-    @onetomany({ rel: 'teacher', itemType: teacher, embedded: true, persist: true, eagerLoading: false})
+    @onetomany({ rel: 'teacher', itemType: teacher, embedded: false, persist: true, eagerLoading: false})
     teachers: Array<teacher>;
 
     @onetomany({ rel: 'myclass', itemType: myclass, embedded: true, persist: true, eagerLoading: false})
     classes: Array<myclass>;
+
+    @onetomany({ rel: 'term', itemType: term, embedded: true, persist: true, eagerLoading: false})
+    terms: Array<term>;
 }
 
 export default school;

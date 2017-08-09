@@ -13,6 +13,8 @@ const _1 = require('nodedata/mongoose/enums/');
 const decorators_2 = require('nodedata/core/decorators');
 const baseModel_1 = require('./baseModel');
 const course_1 = require('./course');
+const student_1 = require('./student');
+// import {teacher} from './teacher';
 let myclass = class myclass extends baseModel_1.baseModel {
 };
 __decorate([
@@ -28,9 +30,25 @@ __decorate([
     __metadata('design:type', String)
 ], myclass.prototype, "section", void 0);
 __decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], myclass.prototype, "class_teacher_id", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], myclass.prototype, "class_unique_identifier", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', Array)
+], myclass.prototype, "subjects", void 0);
+__decorate([
     decorators_2.onetomany({ rel: 'course', itemType: course_1.course, embedded: true, persist: true, eagerLoading: false }), 
     __metadata('design:type', Array)
 ], myclass.prototype, "courses", void 0);
+__decorate([
+    decorators_2.onetomany({ rel: 'student', itemType: student_1.student, embedded: true, persist: true, eagerLoading: false }), 
+    __metadata('design:type', Array)
+], myclass.prototype, "students", void 0);
 myclass = __decorate([
     decorators_1.document({ name: 'myclass', strict: _1.Strict.false }), 
     __metadata('design:paramtypes', [])
@@ -38,4 +56,5 @@ myclass = __decorate([
 exports.myclass = myclass;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = myclass;
+
 //# sourceMappingURL=myclass.js.map

@@ -20,4 +20,5 @@ __decorate([
 exports.baseModel = baseModel;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = baseModel;
+
 //# sourceMappingURL=baseModel.js.map

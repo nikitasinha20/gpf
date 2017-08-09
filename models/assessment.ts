@@ -7,7 +7,8 @@ import {baseModel} from './baseModel';
 import {tag} from './tag';
 import {topic} from './topic';
 import {question} from './question';
-import {Term} from '../enums/termEnum';
+import {report} from './report';
+import {course} from './course';
 
 @document({ name: 'assessment', strict: Strict.false })
 export class assessment extends baseModel {
@@ -45,18 +46,15 @@ export class assessment extends baseModel {
     @field()
     valid_till: string
 
-    @field()
-    term: Term
-
-    // @onetomany({ rel: 'tag', itemType: tag, embedded: true, persist: true, eagerLoading: false})
-    // tags: Array<tag>;
-
     @onetomany({ rel: 'topic', itemType: topic, embedded: true, persist: true, eagerLoading: false})
     topics: Array<topic>;
 
     @onetomany({ rel: 'question', itemType: question, embedded: true, persist: true, eagerLoading: false})
     questions: Array<question>;
-    
+
+    @onetomany({ rel: 'report', itemType: report, embedded: true, persist: true, eagerLoading: false})
+    reports: Array<report>;
+
 }
 
 export default assessment;

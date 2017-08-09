@@ -47,4 +47,5 @@ teacher = __decorate([
 exports.teacher = teacher;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = teacher;
+
 //# sourceMappingURL=teacher.js.map

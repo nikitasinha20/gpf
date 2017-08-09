@@ -13,6 +13,7 @@ const _1 = require('nodedata/mongoose/enums/');
 const baseModel_1 = require('./baseModel');
 const teacher_1 = require('./teacher');
 const myclass_1 = require('./myclass');
+const term_1 = require('./term');
 const decorators_2 = require('nodedata/core/decorators');
 let school = class school extends baseModel_1.baseModel {
 };
@@ -45,13 +46,17 @@ __decorate([
     __metadata('design:type', String)
 ], school.prototype, "cluster", void 0);
 __decorate([
-    decorators_2.onetomany({ rel: 'teacher', itemType: teacher_1.teacher, embedded: true, persist: true, eagerLoading: false }), 
+    decorators_2.onetomany({ rel: 'teacher', itemType: teacher_1.teacher, embedded: false, persist: true, eagerLoading: false }), 
     __metadata('design:type', Array)
 ], school.prototype, "teachers", void 0);
 __decorate([
     decorators_2.onetomany({ rel: 'myclass', itemType: myclass_1.myclass, embedded: true, persist: true, eagerLoading: false }), 
     __metadata('design:type', Array)
 ], school.prototype, "classes", void 0);
+__decorate([
+    decorators_2.onetomany({ rel: 'term', itemType: term_1.term, embedded: true, persist: true, eagerLoading: false }), 
+    __metadata('design:type', Array)
+], school.prototype, "terms", void 0);
 school = __decorate([
     decorators_1.document({ name: 'school', strict: _1.Strict.throw }), 
     __metadata('design:paramtypes', [])
@@ -59,4 +64,5 @@ school = __decorate([
 exports.school = school;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = school;
+
 //# sourceMappingURL=school.js.map

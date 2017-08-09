@@ -19,4 +19,5 @@ TeacherRepository = __decorate([
 ], TeacherRepository);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = TeacherRepository;
+
 //# sourceMappingURL=teacherRepository.js.map
