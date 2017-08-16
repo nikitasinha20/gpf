@@ -39,7 +39,7 @@ __decorate([
 ], myclass.prototype, "class_unique_identifier", void 0);
 __decorate([
     decorators_1.field(), 
-    __metadata('design:type', Array)
+    __metadata('design:type', String)
 ], myclass.prototype, "subjects", void 0);
 __decorate([
     decorators_2.onetomany({ rel: 'course', itemType: course_1.course, embedded: true, persist: true, eagerLoading: false }), 

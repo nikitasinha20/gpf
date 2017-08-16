@@ -14,6 +14,7 @@ const _1 = require('nodedata/mongoose/enums/');
 const decorators_2 = require('nodedata/core/decorators');
 const baseModel_1 = require('./baseModel');
 const myclass_1 = require('./myclass');
+const school_1 = require('./school');
 let teacher = class teacher extends baseModel_1.baseModel {
 };
 __decorate([
@@ -40,6 +41,10 @@ __decorate([
     decorators_2.onetomany({ rel: 'myclass', itemType: myclass_1.myclass, embedded: true, persist: true, eagerLoading: false }), 
     __metadata('design:type', Array)
 ], teacher.prototype, "myclasses", void 0);
+__decorate([
+    decorators_2.manytoone({ rel: 'school', itemType: school_1.school, embedded: false, persist: true, eagerLoading: false }), 
+    __metadata('design:type', school_1.school)
+], teacher.prototype, "school", void 0);
 teacher = __decorate([
     decorators_1.document({ name: 'teacher', strict: _1.Strict.false }), 
     __metadata('design:paramtypes', [])

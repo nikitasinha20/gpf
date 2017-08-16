@@ -28,7 +28,7 @@ class_teacher_id: string
 class_unique_identifier: string
 
 @field()
-subjects: Array<string>
+subjects: string
 
 @onetomany({ rel: 'course', itemType: course, embedded: true, persist: true, eagerLoading: false})
 courses: Array<course>;

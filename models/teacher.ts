@@ -6,6 +6,7 @@ import {Strict} from 'nodedata/mongoose/enums/';
 import {onetomany, manytoone, manytomany, onetoone, promisable} from 'nodedata/core/decorators';
 import {baseModel} from './baseModel';
 import {myclass} from './myclass';
+import {school} from './school';
 
 @document({ name: 'teacher', strict: Strict.false })
 export class teacher extends baseModel {
@@ -27,6 +28,9 @@ export class teacher extends baseModel {
 
     @onetomany({ rel: 'myclass', itemType: myclass, embedded: true, persist: true, eagerLoading: false})
     myclasses: Array<myclass>;
+    
+    @manytoone({rel: 'school', itemType: school, embedded: false, persist: true, eagerLoading: false})
+    school: school;
     
 }
 
