@@ -12,6 +12,9 @@ const decorators_1 = require("nodedata/core/decorators");
 const score_1 = require('../models/score');
 const dynamic_repository_1 = require('nodedata/core/dynamic/dynamic-repository');
 let scoreRepository = class scoreRepository extends dynamic_repository_1.DynamicRepository {
+    dobulkpost(objArr) {
+        return super.bulkPost(objArr);
+    }
 };
 scoreRepository = __decorate([
     decorators_1.repository({ path: 'score', model: score_1.score }), 
