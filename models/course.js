@@ -14,7 +14,7 @@ const decorators_2 = require('nodedata/core/decorators');
 const baseModel_1 = require('./baseModel');
 const tag_1 = require('./tag');
 const mycollection_1 = require('./mycollection');
-const assessment_1 = require('./assessment');
+const test_1 = require('./test');
 // import {myclass} from './myclass';
 let course = class course extends baseModel_1.baseModel {
 };
@@ -59,9 +59,9 @@ __decorate([
     __metadata('design:type', Array)
 ], course.prototype, "collections", void 0);
 __decorate([
-    decorators_2.onetomany({ rel: 'assessment', itemType: assessment_1.assessment, embedded: true, persist: true, eagerLoading: false }), 
+    decorators_2.onetomany({ rel: 'test', itemType: test_1.test1, embedded: true, persist: true, eagerLoading: false }), 
     __metadata('design:type', Array)
-], course.prototype, "assessments", void 0);
+], course.prototype, "assesments", void 0);
 course = __decorate([
     decorators_1.document({ name: 'course', strict: _1.Strict.false }), 
     __metadata('design:paramtypes', [])

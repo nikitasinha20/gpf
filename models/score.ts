@@ -5,6 +5,7 @@ import {field, document} from 'nodedata/mongoose/decorators';
 import {baseModel} from './baseModel';
 import {question} from './question';
 import {student} from './student';
+import * as test1 from './test';
 import {onetomany, manytoone, manytomany, onetoone} from 'nodedata/core/decorators';
 
 @document({ name: 'score', strict: Strict.false })
@@ -13,11 +14,14 @@ export class score extends baseModel {
     @field()
     marks: number;
 
-    @onetoone({ rel: 'student', itemType: student, embedded: false, persist: true, eagerLoading: false})
+    @manytoone({ rel: 'student', itemType: student, embedded: false, persist: true, eagerLoading: false})
     student: student;
 
-    @onetoone({ rel: 'question', itemType: question, embedded: false, persist: true, eagerLoading: false})
+    @manytoone({ rel: 'question', itemType: question, embedded: false, persist: true, eagerLoading: false})
     question: question;
+
+    @manytoone({ rel: 'test', itemType: test1, embedded: false, persist: true, eagerLoading: false})
+    assessment: Object;
 }
 
 export default score;

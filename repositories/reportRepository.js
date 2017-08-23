@@ -9,16 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const decorators_1 = require("nodedata/core/decorators");
-const assessment_1 = require('../models/assessment');
+const report_1 = require('../models/report');
 const dynamic_repository_1 = require('nodedata/core/dynamic/dynamic-repository');
-let AssessmentRepository = class AssessmentRepository extends dynamic_repository_1.DynamicRepository {
+let ReportRepository = class ReportRepository extends dynamic_repository_1.DynamicRepository {
 };
-AssessmentRepository = __decorate([
-    decorators_1.repository({ path: 'assessment', model: assessment_1.assessment }), 
+ReportRepository = __decorate([
+    decorators_1.repository({ path: 'report', model: report_1.report }), 
     __metadata('design:paramtypes', [])
-], AssessmentRepository);
-exports.AssessmentRepository = AssessmentRepository;
+], ReportRepository);
+exports.ReportRepository = ReportRepository;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = AssessmentRepository;
+exports.default = ReportRepository;
 
-//# sourceMappingURL=assessmentRepository.js.map
+//# sourceMappingURL=reportRepository.js.map

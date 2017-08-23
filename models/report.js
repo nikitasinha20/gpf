@@ -18,15 +18,35 @@ let report = class report extends baseModel_1.baseModel {
 __decorate([
     decorators_1.field(), 
     __metadata('design:type', String)
-], report.prototype, "text", void 0);
+], report.prototype, "standard", void 0);
 __decorate([
     decorators_1.field(), 
     __metadata('design:type', String)
-], report.prototype, "answer", void 0);
+], report.prototype, "subject", void 0);
 __decorate([
     decorators_1.field(), 
-    __metadata('design:type', String)
-], report.prototype, "marks", void 0);
+    __metadata('design:type', Number)
+], report.prototype, "max_marks", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', Number)
+], report.prototype, "total_average_score", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', Number)
+], report.prototype, "total_students_passed", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', Number)
+], report.prototype, "average_pass_percentage", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', Number)
+], report.prototype, "average_scored_percentage", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', Number)
+], report.prototype, "total_students", void 0);
 __decorate([
     decorators_2.onetomany({ rel: 'category', itemType: category_1.category, embedded: true, persist: true, eagerLoading: false }), 
     __metadata('design:type', Array)

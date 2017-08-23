@@ -10,11 +10,11 @@ import {question} from './question';
 import {report} from './report';
 import {course} from './course';
 
-@document({ name: 'assessment', strict: Strict.false })
-export class assessment extends baseModel {
+@document({ name: 'test', strict: Strict.false })
+export class test1 extends baseModel {
 
     @field()
-    assessment_id: string;
+    test_id: string;
 
     @field()
     Uid: string
@@ -23,7 +23,7 @@ export class assessment extends baseModel {
     title: string
 
     @field()
-    custom_assessment_id: string
+    custom_test_id: string
 
     @field()
     creator_id: string
@@ -38,10 +38,13 @@ export class assessment extends baseModel {
     board: string
 
     @field()
-    num_questions: string
+    num_questions: number
 
     @field()
-    maximum_marks: string
+    maximum_marks: number
+
+    @field()
+    passing_marks: number
 
     @field()
     valid_till: string
@@ -52,9 +55,9 @@ export class assessment extends baseModel {
     @onetomany({ rel: 'question', itemType: question, embedded: true, persist: true, eagerLoading: false})
     questions: Array<question>;
 
-    @onetomany({ rel: 'report', itemType: report, embedded: true, persist: true, eagerLoading: false})
-    reports: Array<report>;
+    @onetoone({ rel: 'report', itemType: report, embedded: true, persist: true, eagerLoading: false})
+    report: report;
 
 }
 
-export default assessment;
+export default test1;

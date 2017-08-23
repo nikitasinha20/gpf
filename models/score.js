@@ -13,6 +13,7 @@ const decorators_1 = require('nodedata/mongoose/decorators');
 const baseModel_1 = require('./baseModel');
 const question_1 = require('./question');
 const student_1 = require('./student');
+const test1 = require('./test');
 const decorators_2 = require('nodedata/core/decorators');
 let score = class score extends baseModel_1.baseModel {
 };
@@ -21,13 +22,17 @@ __decorate([
     __metadata('design:type', Number)
 ], score.prototype, "marks", void 0);
 __decorate([
-    decorators_2.onetoone({ rel: 'student', itemType: student_1.student, embedded: false, persist: true, eagerLoading: false }), 
+    decorators_2.manytoone({ rel: 'student', itemType: student_1.student, embedded: false, persist: true, eagerLoading: false }), 
     __metadata('design:type', student_1.student)
 ], score.prototype, "student", void 0);
 __decorate([
-    decorators_2.onetoone({ rel: 'question', itemType: question_1.question, embedded: false, persist: true, eagerLoading: false }), 
+    decorators_2.manytoone({ rel: 'question', itemType: question_1.question, embedded: false, persist: true, eagerLoading: false }), 
     __metadata('design:type', question_1.question)
 ], score.prototype, "question", void 0);
+__decorate([
+    decorators_2.manytoone({ rel: 'test', itemType: test1, embedded: false, persist: true, eagerLoading: false }), 
+    __metadata('design:type', Object)
+], score.prototype, "assessment", void 0);
 score = __decorate([
     decorators_1.document({ name: 'score', strict: _1.Strict.false }), 
     __metadata('design:paramtypes', [])

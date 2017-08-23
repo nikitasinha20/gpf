@@ -9,25 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const decorators_1 = require("nodedata/core/decorators");
-const score_1 = require('../models/score');
-const AuthorizationRepository_1 = require('nodedata/tests/repositories/security/AuthorizationRepository');
-const ScoreService = require('../services/scoreService');
-const inject_1 = require('nodedata/di/decorators/inject');
-let scoreRepository = class scoreRepository extends AuthorizationRepository_1.AuthorizationRepository {
-    postCreate(params) {
-        let input_score = (params.newPersistentEntity);
-        return this.scoreService.reporting(input_score);
-    }
+const student_1 = require('../models/student');
+const dynamic_repository_1 = require('nodedata/core/dynamic/dynamic-repository');
+let StudentRepository = class StudentRepository extends dynamic_repository_1.DynamicRepository {
 };
-__decorate([
-    inject_1.inject(ScoreService), 
-    __metadata('design:type', ScoreService.ScoreService)
-], scoreRepository.prototype, "scoreService", void 0);
-scoreRepository = __decorate([
-    decorators_1.repository({ path: 'score', model: score_1.score }), 
+StudentRepository = __decorate([
+    decorators_1.repository({ path: 'student', model: student_1.student }), 
     __metadata('design:paramtypes', [])
-], scoreRepository);
+], StudentRepository);
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = scoreRepository;
+exports.default = StudentRepository;
 
-//# sourceMappingURL=scoreRepository.js.map
+//# sourceMappingURL=studentRepository.js.map

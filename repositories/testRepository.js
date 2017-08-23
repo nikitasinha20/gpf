@@ -8,13 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const service_1 = require('nodedata/di/decorators/service');
-let AssessmentService = class AssessmentService {
+const decorators_1 = require("nodedata/core/decorators");
+const test_1 = require('../models/test');
+const dynamic_repository_1 = require('nodedata/core/dynamic/dynamic-repository');
+let testRepository = class testRepository extends dynamic_repository_1.DynamicRepository {
 };
-AssessmentService = __decorate([
-    service_1.service({ singleton: true, serviceName: 'assessmentService' }), 
+testRepository = __decorate([
+    decorators_1.repository({ path: 'assessment', model: test_1.test1 }), 
     __metadata('design:paramtypes', [])
-], AssessmentService);
-exports.AssessmentService = AssessmentService;
+], testRepository);
+exports.testRepository = testRepository;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = testRepository;
 
-//# sourceMappingURL=assessmentService.js.map
+//# sourceMappingURL=testRepository.js.map

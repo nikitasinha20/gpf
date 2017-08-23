@@ -6,7 +6,7 @@ import {onetomany, manytoone, manytomany, onetoone, promisable} from 'nodedata/c
 import {baseModel} from './baseModel';
 import {tag} from './tag';
 import {mycollection} from './mycollection';
-import {assessment} from './assessment';
+import {test1} from './test';
 // import {myclass} from './myclass';
 
 @document({ name: 'course', strict: Strict.false })
@@ -42,8 +42,8 @@ tags: Array<tag>;
 @onetomany({ rel: 'mycollection', itemType: mycollection, embedded: true, persist: true, eagerLoading: false})
 collections: Array<mycollection>;
 
-@onetomany({ rel: 'assessment', itemType: assessment, embedded: true, persist: true, eagerLoading: false})
-assessments: Array<assessment>;
+@onetomany({ rel: 'test', itemType: test1, embedded: true, persist: true, eagerLoading: false})
+assesments: Array<test1>;
 
 // @manytoone({ rel: 'myclass', itemType: myclass, embedded: false, persist: true, eagerLoading: false})
 // myclass: string
