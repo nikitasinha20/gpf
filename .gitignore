@@ -2,3 +2,5 @@ node_modules/**
 typings/**/*.*
 npm-debug.log
 nodedataLog.log
+.vscode/
+package-lock.json
