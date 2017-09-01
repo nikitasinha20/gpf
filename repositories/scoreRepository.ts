@@ -9,7 +9,7 @@ import { inject } from 'nodedata/di/decorators/inject';
 import Mongoose = require("mongoose");
 
 @repository({ path: 'score', model: score })
-export default class scoreRepository extends DynamicRepository {
+export class scoreRepository extends DynamicRepository {
 
     // @inject(ScoreService)
     // private scoreService: ScoreService.ScoreService
@@ -25,3 +25,5 @@ export default class scoreRepository extends DynamicRepository {
     // }
 
 }
+
+export default scoreRepository;

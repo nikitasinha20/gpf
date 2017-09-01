@@ -9,6 +9,7 @@ var LocalStrategy = require('passport-local').Strategy;
 const config = require('./config');
 const securityConfig = require('nodedata/security-config');
 const exports_1 = require('nodedata/core/exports');
+const scoreService_1 = require('./services/scoreService');
 const data = require('nodedata/mongoose');
 //---------sequelize setting-----------------------------
 const seqData = require("nodedata/sequelizeimp");
@@ -30,6 +31,12 @@ app.use(expressSession({ secret: 'mySecretKey', resave: false, saveUninitialized
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
+app.get("/data/score/searchAllWithAssessment", function (req, res) {
+    scoreService_1.ScoreService.findAll(req.query).then(result => {
+        res.set("Content-Type", "application/json");
+        res.send(result);
+    });
+});
 app.use("/", exports_1.router);
 var server = http.createServer(app);
 var port = process.env.PORT || 9999;

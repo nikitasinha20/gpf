@@ -10,6 +10,7 @@ import * as securityConfig from 'nodedata/security-config';
 import {router} from 'nodedata/core/exports';
 import {repositoryMap} from 'nodedata/core/exports';
 import {Container} from 'nodedata/di';
+import { ScoreService } from './services/scoreService';
 
 import * as data from 'nodedata/mongoose';
 //---------sequelize setting-----------------------------
@@ -33,6 +34,12 @@ app.use(expressSession({ secret: 'mySecretKey', resave: false, saveUninitialized
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
+app.get("/data/score/searchAllWithAssessment", function (req: any, res: any) {
+    ScoreService.findAll(req.query).then(result=> {
+        res.set("Content-Type", "application/json");
+        res.send(result);
+    });
+});
 app.use("/", router);
 var server: any = http.createServer(<any>app);
 var port = process.env.PORT || 9999;
