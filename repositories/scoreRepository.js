@@ -11,7 +11,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const decorators_1 = require("nodedata/core/decorators");
 const score_1 = require('../models/score');
 const dynamic_repository_1 = require('nodedata/core/dynamic/dynamic-repository');
+const Mongoose = require("mongoose");
 let scoreRepository = class scoreRepository extends dynamic_repository_1.DynamicRepository {
+    // @inject(ScoreService)
+    // private scoreService: ScoreService.ScoreService
+    // postCreate(params: EntityActionParam): Q.Promise<any> {
+    //     let input_score: score = <score>(params.newPersistentEntity);
+    //     return this.scoreService.reporting(input_score);  
+    // }
+    // postUpdate(params: EntityActionParam): Q.Promise<any> {
+    //     let input_score: score = <score>(params.newPersistentEntity);
+    //     return this.scoreService.reporting(input_score);
+    // }
+    bulkPost(objArr) {
+        objArr.forEach((obj, i) => {
+            return this.findWhere({ "student": Mongoose.Types.ObjectId(obj.student), "assessment": Mongoose.Types.ObjectId(obj.assessment) }).then(scores => {
+                var score = scores[0];
+                if (score) {
+                    objArr.splice(i, 1);
+                    return this.put(score._id, obj);
+                }
+                if (i == (objArr.length - 1)) {
+                    return super.bulkPost(objArr);
+                }
+            }).catch(error => {
+                return error;
+            });
+        });
+        return super.bulkPost([]);
+    }
 };
 scoreRepository = __decorate([
     decorators_1.repository({ path: 'score', model: score_1.score }), 
