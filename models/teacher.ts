@@ -24,6 +24,9 @@ export class teacher extends baseModel {
     username: string
 
     @field()
+    password: string
+
+    @field()
     hiredate: string
 
     @onetomany({ rel: 'myclass', itemType: myclass, embedded: true, persist: true, eagerLoading: false})

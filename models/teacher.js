@@ -36,6 +36,10 @@ __decorate([
 __decorate([
     decorators_1.field(), 
     __metadata('design:type', String)
+], teacher.prototype, "password", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
 ], teacher.prototype, "hiredate", void 0);
 __decorate([
     decorators_2.onetomany({ rel: 'myclass', itemType: myclass_1.myclass, embedded: true, persist: true, eagerLoading: false }), 
