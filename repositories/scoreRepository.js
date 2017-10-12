@@ -24,18 +24,15 @@ let scoreRepository = class scoreRepository extends dynamic_repository_1.Dynamic
     //     return this.scoreService.reporting(input_score);
     // }
     bulkPost(objArr) {
-        objArr.forEach((obj, i) => {
-            return this.findWhere({ "student": Mongoose.Types.ObjectId(obj.student), "assessment": Mongoose.Types.ObjectId(obj.assessment) }).then(scores => {
+        objArr.forEach((obj) => {
+            this.findWhere({ "student": Mongoose.Types.ObjectId(obj.student), "assessment": Mongoose.Types.ObjectId(obj.assessment) }).then(scores => {
                 var score = scores[0];
                 if (score) {
-                    objArr.splice(i, 1);
                     return this.put(score._id, obj);
                 }
-                if (i == (objArr.length - 1)) {
-                    return super.bulkPost(objArr);
+                else {
+                    return this.post(obj);
                 }
-            }).catch(error => {
-                return error;
             });
         });
         return super.bulkPost([]);
