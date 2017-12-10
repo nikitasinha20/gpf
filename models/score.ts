@@ -4,7 +4,7 @@ import {Types} from 'mongoose';
 import {field, document} from 'nodedata/mongoose/decorators'; 
 import {baseModel} from './baseModel';
 import {question} from './question';
-import {student} from './student';
+import {Student} from './student';
 import * as test1 from './test';
 import {onetomany, manytoone, manytomany, onetoone} from 'nodedata/core/decorators';
 
@@ -14,8 +14,8 @@ export class score extends baseModel {
     @field()
     marks: number;
 
-    @manytoone({ rel: 'student', itemType: student, embedded: false, persist: true, eagerLoading: false})
-    student: student;
+    @manytoone({ rel: 'student', itemType: Student, embedded: false, persist: true, eagerLoading: false})
+    student: Student;
 
     @manytoone({ rel: 'question', itemType: question, embedded: false, persist: true, eagerLoading: false})
     question: question;

@@ -11,8 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const decorators_1 = require("nodedata/core/decorators");
 const report_1 = require('../models/report');
 const dynamic_repository_1 = require('nodedata/core/dynamic/dynamic-repository');
+const inject_1 = require('nodedata/di/decorators/inject');
+const ReportService = require('../services/reportService');
 let ReportRepository = class ReportRepository extends dynamic_repository_1.DynamicRepository {
+    doCreateReport(params) {
+        return this.reportService.createReport(params);
+    }
 };
+__decorate([
+    inject_1.inject(ReportService), 
+    __metadata('design:type', ReportService.ReportService)
+], ReportRepository.prototype, "reportService", void 0);
 ReportRepository = __decorate([
     decorators_1.repository({ path: 'report', model: report_1.report }), 
     __metadata('design:paramtypes', [])

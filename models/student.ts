@@ -4,8 +4,9 @@ import {field, document, transient} from 'nodedata/mongoose/decorators';
 import {Strict} from 'nodedata/mongoose/enums/';
 import {baseModel} from './baseModel';
 
+
 @document({ name: 'student', strict: Strict.false })
-export class student extends baseModel {
+export class Student extends baseModel {
 
 @field()
 roll_no: string
@@ -31,6 +32,10 @@ join_date: string
 @field()
 distinction: string
 
+// public allStudents(){
+//     this.findAll();
+// }
+
 }
 
-export default student;
+export default Student;

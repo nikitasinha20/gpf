@@ -46,7 +46,7 @@ __decorate([
     __metadata('design:type', Array)
 ], myclass.prototype, "courses", void 0);
 __decorate([
-    decorators_2.onetomany({ rel: 'student', itemType: student_1.student, embedded: true, persist: true, eagerLoading: false }), 
+    decorators_2.onetomany({ rel: 'student', itemType: student_1.Student, embedded: true, persist: true, eagerLoading: false }), 
     __metadata('design:type', Array)
 ], myclass.prototype, "students", void 0);
 myclass = __decorate([

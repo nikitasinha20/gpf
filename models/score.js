@@ -22,8 +22,8 @@ __decorate([
     __metadata('design:type', Number)
 ], score.prototype, "marks", void 0);
 __decorate([
-    decorators_2.manytoone({ rel: 'student', itemType: student_1.student, embedded: false, persist: true, eagerLoading: false }), 
-    __metadata('design:type', student_1.student)
+    decorators_2.manytoone({ rel: 'student', itemType: student_1.Student, embedded: false, persist: true, eagerLoading: false }), 
+    __metadata('design:type', student_1.Student)
 ], score.prototype, "student", void 0);
 __decorate([
     decorators_2.manytoone({ rel: 'question', itemType: question_1.question, embedded: false, persist: true, eagerLoading: false }), 

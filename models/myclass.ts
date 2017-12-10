@@ -5,7 +5,7 @@ import {Strict} from 'nodedata/mongoose/enums/';
 import {onetomany, manytoone, manytomany, onetoone, promisable} from 'nodedata/core/decorators';
 import {baseModel} from './baseModel';
 import {course} from './course';
-import {student} from './student';
+import {Student} from './student';
 // import {teacher} from './teacher';
 
 
@@ -33,8 +33,8 @@ subjects: string
 @onetomany({ rel: 'course', itemType: course, embedded: true, persist: true, eagerLoading: false})
 courses: Array<course>;
 
-@onetomany({ rel: 'student', itemType: student, embedded: true, persist: true, eagerLoading: false})
-students: Array<student>;
+@onetomany({ rel: 'student', itemType: Student, embedded: true, persist: true, eagerLoading: false})
+students: Array<Student>;
 
 // @manytoone({ rel: 'teacher', itemType: teacher, embedded: false, persist: true, eagerLoading: false})
 // teacher: string

@@ -17,6 +17,7 @@ SchoolRepository = __decorate([
     decorators_1.repository({ path: 'school', model: school_1.school }), 
     __metadata('design:paramtypes', [])
 ], SchoolRepository);
+exports.SchoolRepository = SchoolRepository;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = SchoolRepository;
 

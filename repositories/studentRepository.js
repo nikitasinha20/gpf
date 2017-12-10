@@ -12,11 +12,17 @@ const decorators_1 = require("nodedata/core/decorators");
 const student_1 = require('../models/student');
 const dynamic_repository_1 = require('nodedata/core/dynamic/dynamic-repository');
 let StudentRepository = class StudentRepository extends dynamic_repository_1.DynamicRepository {
+    getAllStudentList() {
+        return this.findAll().then(studentList => {
+            return studentList;
+        });
+    }
 };
 StudentRepository = __decorate([
-    decorators_1.repository({ path: 'student', model: student_1.student }), 
+    decorators_1.repository({ path: 'student', model: student_1.Student }), 
     __metadata('design:paramtypes', [])
 ], StudentRepository);
+exports.StudentRepository = StudentRepository;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = StudentRepository;
 

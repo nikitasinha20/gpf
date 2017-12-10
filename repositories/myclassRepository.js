@@ -17,6 +17,7 @@ MyclassRepository = __decorate([
     decorators_1.repository({ path: 'myclass', model: myclass_1.myclass }), 
     __metadata('design:paramtypes', [])
 ], MyclassRepository);
+exports.MyclassRepository = MyclassRepository;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = MyclassRepository;
 
