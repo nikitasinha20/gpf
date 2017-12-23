@@ -81,7 +81,7 @@ let ReportService = class ReportService {
             });
             return Q.allSettled(asyncCalls).then(res => {
                 var finalReport = this.exportData(reportDataList);
-                return finalReport;
+                return reportDataList;
             }).catch(err => {
                 throw err;
             });
