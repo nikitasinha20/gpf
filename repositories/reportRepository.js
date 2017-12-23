@@ -10,12 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const decorators_1 = require("nodedata/core/decorators");
 const report_1 = require('../models/report');
-const dynamic_repository_1 = require('nodedata/core/dynamic/dynamic-repository');
+const AuthorizationRepository_1 = require('./../security/AuthorizationRepository');
 const inject_1 = require('nodedata/di/decorators/inject');
 const ReportService = require('../services/reportService');
-let ReportRepository = class ReportRepository extends dynamic_repository_1.DynamicRepository {
-    doCreateReport(params) {
-        return this.reportService.createReport(params);
+const Q = require('q');
+let ReportRepository = class ReportRepository extends AuthorizationRepository_1.AuthorizationRepository {
+    preCreate(params) {
+        console.log("***********In precreate");
+        return Q.resolve(params);
+    }
+    doCreateReport(standard, subject) {
+        return this.reportService.createReport(standard, subject);
     }
 };
 __decorate([

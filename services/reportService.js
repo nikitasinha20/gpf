@@ -15,119 +15,82 @@ const Enumerable = require('linq');
 const schoolRepository = require('../repositories/schoolRepository');
 const MyclassRepository = require('../repositories/myclassRepository');
 const TeacherRepository = require('../repositories/teacherRepository');
-const excel = require('node-excel-export');
+const ScoreRepository = require('../repositories/scoreRepository');
+const QuestionRepository = require('../repositories/questionRepository');
+// const excel = require('node-excel-export');
+var json2xls = require('json2xls');
+const fs = require('fs');
+const Q = require('q');
 let ReportService = class ReportService {
-    createReport(params) {
-        var subjectParam = params["subject"];
-        var standardParam = params["standard"];
-        var assessmentParam = params["assessment"];
+    createReport(param_standard, param_subject) {
+        var subjectParam = param_subject;
+        var standardParam = param_standard;
         var reportDataList = [];
-        var studentList = this.studentRepo.getAllStudentList();
-        Enumerable.from(studentList).forEach(student => {
-            let reportData = {};
-            reportData['childName'] = student['name'];
-            reportData['gender'] = student['sex'];
-            let id = student['_id'];
-            return this.MyclassRepo.findWhere({ 'students._id': id }).then((studentClass) => {
-                if (studentClass.standard === standardParam) {
-                    reportData['standard'] = studentClass.standard;
-                    return this.schoolRepo.findWhere({ 'classes._id': studentClass._id }).then((studentSchool) => {
-                        reportData['district'] = studentSchool.disctrict;
-                        reportData['block'] = studentSchool.block;
-                        reportData['cluster'] = studentSchool.cluster;
-                        reportData['schoolName'] = studentSchool.school_name;
-                        return this.teacherRepo.findWhere({ 'school_id': studentSchool._id.toString() }).then((schoolTeachers) => {
-                            Enumerable.from(schoolTeachers).forEach(schoolTeacher => {
-                                Enumerable.from(schoolTeacher.myclasses).forEach(teacherClass => {
-                                    Enumerable.from(teacherClass.courses).forEach(teacherCourse => {
-                                        if (teacherCourse.course_subject === subjectParam) {
-                                            if (teacherClass.standard == studentClass.standard) {
-                                                reportData['teacherName'] = schoolTeacher.name;
-                                            }
-                                            reportDataList.push(reportData);
-                                        }
+        var asyncCalls = [];
+        return this.MyclassRepo.findWhere({ "standard": standardParam }).then((classes) => {
+            var studentsList;
+            Enumerable.from(classes).forEach(req_class => {
+                if (req_class.students && req_class.students.length > 0) {
+                    // studentsList = studentsList.push(...req_class.students);
+                    Enumerable.from(req_class.students).forEach(student => {
+                        let reportData = {};
+                        reportData['childName'] = student['name'];
+                        reportData['gender'] = student['sex'];
+                        asyncCalls.push(this.schoolRepo.findWhere({ 'classes._id': req_class._id }).then((studentSchools) => {
+                            var studentSchool = studentSchools[0];
+                            if (studentSchool) {
+                                reportData['district'] = studentSchool.disctrict;
+                                reportData['block'] = studentSchool.block;
+                                reportData['cluster'] = studentSchool.cluster;
+                                reportData['schoolName'] = studentSchool.school_name;
+                                return this.teacherRepo.findWhere({ 'school_id': studentSchool._id.toString() }).then((schoolTeachers) => {
+                                    Enumerable.from(schoolTeachers).forEach(schoolTeacher => {
+                                        Enumerable.from(schoolTeacher.myclasses).forEach(teacherClass => {
+                                            Enumerable.from(teacherClass.courses).forEach(teacherCourse => {
+                                                if (teacherCourse.course_subject === subjectParam) {
+                                                    if (teacherClass.standard == req_class.standard) {
+                                                        reportData['teacherName'] = schoolTeacher.name;
+                                                    }
+                                                    return this.scoreRepo.findWhere({ 'student': student._id }).then((scores) => {
+                                                        Enumerable.from(scores).forEach(score => {
+                                                            return this.questionRepo.findWhere({ _id: score.question }).then((questions) => {
+                                                                var question = questions[0];
+                                                                reportData[question.text] = score.marks;
+                                                            });
+                                                        });
+                                                        let exists = false;
+                                                        Enumerable.from(reportDataList).forEach(data => {
+                                                            if (reportData['childName'] == data['childName']) {
+                                                                exists = true;
+                                                            }
+                                                        });
+                                                        if (!exists && Object.keys(reportData).length > 8) {
+                                                            reportData['class'] = standardParam;
+                                                            reportDataList.push(reportData);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        });
                                     });
                                 });
-                            });
-                        });
+                            }
+                        }));
                     });
                 }
             });
+            return Q.allSettled(asyncCalls).then(res => {
+                var finalReport = this.exportData(reportDataList);
+                return finalReport;
+            }).catch(err => {
+                throw err;
+            });
         });
-        // var finalReport = this.exportData( reportDataList);
-        //export reportDataList(It contains all the rows)
-        return Q.when(reportDataList);
     }
     exportData(params) {
-        const styles = {
-            headerDark: {
-                fill: {
-                    fgColor: {
-                        rgb: 'FF000000'
-                    }
-                },
-                font: {
-                    color: {
-                        rgb: 'FFFFFFFF'
-                    },
-                    sz: 14,
-                    bold: true,
-                    underline: true
-                }
-            },
-            cellPink: {
-                fill: {
-                    fgColor: {
-                        rgb: 'FFFFCCFF'
-                    }
-                }
-            },
-            cellGreen: {
-                fill: {
-                    fgColor: {
-                        rgb: 'FF00FF00'
-                    }
-                }
-            }
-        };
-        const heading = [];
-        const specification = {
-            customer_name: {
-                displayName: 'Customer',
-                headerStyle: styles.headerDark,
-                cellStyle: function (value, row) {
-                    // if the status is 1 then color in green else color in red 
-                    // Notice how we use another cell value to style the current one 
-                    return (row.status_id == 1) ? styles.cellGreen : { fill: { fgColor: { rgb: 'FFFF0000' } } }; // <- Inline cell style is possible  
-                },
-                width: 120 // <- width in pixels 
-            },
-            status_id: {
-                displayName: 'Status',
-                headerStyle: styles.headerDark,
-                cellFormat: function (value, row) {
-                    return (value == 1) ? 'Active' : 'Inactive';
-                },
-                width: '10' // <- width in chars (when the number is passed as string) 
-            },
-            note: {
-                displayName: 'Description',
-                headerStyle: styles.headerDark,
-                cellStyle: styles.cellPink,
-                width: 220 // <- width in pixels 
-            }
-        };
-        const dataset = [params];
-        const report = excel.buildExport([
-            {
-                name: 'Report',
-                heading: heading,
-                // merges: merges, // <- Merge cell ranges 
-                specification: specification,
-                data: dataset // <-- Report data 
-            }
-        ]);
-        return report;
+        var json = params;
+        var xls = json2xls(json);
+        return fs.writeFileSync('data.xlsx', xls, 'binary');
     }
 };
 __decorate([
@@ -138,6 +101,14 @@ __decorate([
     inject_1.inject(schoolRepository), 
     __metadata('design:type', schoolRepository.SchoolRepository)
 ], ReportService.prototype, "schoolRepo", void 0);
+__decorate([
+    inject_1.inject(ScoreRepository), 
+    __metadata('design:type', ScoreRepository.scoreRepository)
+], ReportService.prototype, "scoreRepo", void 0);
+__decorate([
+    inject_1.inject(QuestionRepository), 
+    __metadata('design:type', QuestionRepository.QuestionRepository)
+], ReportService.prototype, "questionRepo", void 0);
 __decorate([
     inject_1.inject(MyclassRepository), 
     __metadata('design:type', MyclassRepository.MyclassRepository)
