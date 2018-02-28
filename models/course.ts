@@ -28,6 +28,9 @@ course_description: string
 provider: string
 
 @field()
+subject: string
+
+@field()
 remarks: string
 
 @field()
@@ -43,7 +46,7 @@ tags: Array<tag>;
 collections: Array<mycollection>;
 
 @onetomany({ rel: 'test', itemType: test1, embedded: true, persist: true, eagerLoading: false})
-assesments: Array<test1>;
+assessments: Array<test1>;
 
 // @manytoone({ rel: 'myclass', itemType: myclass, embedded: false, persist: true, eagerLoading: false})
 // myclass: string

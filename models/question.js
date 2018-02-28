@@ -28,6 +28,14 @@ __decorate([
     decorators_1.field(), 
     __metadata('design:type', String)
 ], question.prototype, "marks", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], question.prototype, "question_no", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
+], question.prototype, "sub_question_no", void 0);
 question = __decorate([
     decorators_1.document({ name: 'question', strict: _1.Strict.false }), 
     __metadata('design:paramtypes', [])

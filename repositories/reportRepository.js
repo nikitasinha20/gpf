@@ -22,6 +22,16 @@ let ReportRepository = class ReportRepository extends AuthorizationRepository_1.
     doCreateReport(standard, subject) {
         return this.reportService.createReport(standard, subject);
     }
+    doCreateTeacherReport(teacher, standard, subject, pragat, saral) {
+        return this.reportService.createTeacherReport(teacher, standard, subject, saral).then((report) => {
+            if (pragat) {
+                return this.reportService.createPragatReport(report);
+            }
+            else {
+                return Q.resolve(report);
+            }
+        });
+    }
 };
 __decorate([
     inject_1.inject(ReportService), 

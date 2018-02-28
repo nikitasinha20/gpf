@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const decorators_1 = require('nodedata/di/decorators');
 const inject_1 = require('nodedata/di/decorators/inject');
+const mongoose = require("mongoose");
 const studentRepository = require('../repositories/studentRepository');
 const Enumerable = require('linq');
 const schoolRepository = require('../repositories/schoolRepository');
@@ -17,6 +18,7 @@ const MyclassRepository = require('../repositories/myclassRepository');
 const TeacherRepository = require('../repositories/teacherRepository');
 const ScoreRepository = require('../repositories/scoreRepository');
 const QuestionRepository = require('../repositories/questionRepository');
+const CourseRepository = require('../repositories/courseRepository');
 // const excel = require('node-excel-export');
 var json2xls = require('json2xls');
 const fs = require('fs');
@@ -33,7 +35,7 @@ let ReportService = class ReportService {
                 if (req_class.students && req_class.students.length > 0) {
                     // studentsList = studentsList.push(...req_class.students);
                     Enumerable.from(req_class.students).forEach(student => {
-                        let reportData = {};
+                        var reportData = {};
                         reportData['childName'] = student['name'];
                         reportData['gender'] = student['sex'];
                         asyncCalls.push(this.schoolRepo.findWhere({ 'classes._id': req_class._id }).then((studentSchools) => {
@@ -58,7 +60,7 @@ let ReportService = class ReportService {
                                                                 reportData[question.text] = score.marks;
                                                             });
                                                         });
-                                                        let exists = false;
+                                                        var exists = false;
                                                         Enumerable.from(reportDataList).forEach(data => {
                                                             if (reportData['childName'] == data['childName']) {
                                                                 exists = true;
@@ -80,17 +82,152 @@ let ReportService = class ReportService {
                 }
             });
             return Q.allSettled(asyncCalls).then(res => {
-                var finalReport = this.exportData(reportDataList);
+                var file_name = param_standard + "_" + param_subject + ".xlsx";
+                var finalReport = this.exportData(reportDataList, file_name);
                 return reportDataList;
             }).catch(err => {
                 throw err;
             });
         });
     }
-    exportData(params) {
+    exportData(params, file_name) {
         var json = params;
-        var xls = json2xls(json);
-        return fs.writeFileSync('data.xlsx', xls, 'binary');
+        var xls = json2xls(json, { style: "styles.xml" });
+        return fs.writeFileSync(file_name, xls, 'binary');
+    }
+    //params: teacher (_id) , subject, class
+    createTeacherReport(param_teacher, param_standard, param_subject, saral) {
+        var responseData = [];
+        var file_name = param_teacher + "_" + param_standard + "_" + param_subject + ".xlsx";
+        var teacher_id = mongoose.Types.ObjectId(param_teacher);
+        return this.teacherRepo.findWhere({ "_id": teacher_id }).then((teachers) => {
+            if (teachers) {
+                var teacher = teachers[0];
+                console.log("Teacher: ", teacher);
+                return this.schoolRepo.findWhere({ "_id": teacher["school_id"] }).then((schools) => {
+                    if (schools) {
+                        var asyncCalls = [];
+                        var school = schools[0];
+                        console.log("school: ", school);
+                        Enumerable.from(school.classes).forEach(schoolClass => {
+                            if (schoolClass["standard"] == param_standard) {
+                                var students = schoolClass["students"];
+                                Enumerable.from(students).forEach(student => {
+                                    var responseObj = {};
+                                    console.log("student: ", student);
+                                    responseObj["Standard"] = param_standard;
+                                    responseObj["School"] = school["school_name"];
+                                    responseObj["Subject"] = param_subject;
+                                    responseObj["Student"] = student["name"];
+                                    Enumerable.from(teacher["myclasses"]).forEach((teacherClass) => {
+                                        if (teacherClass.standard == param_standard) {
+                                            var courses = teacherClass.courses;
+                                            console.log("courses: ", courses);
+                                            Enumerable.from(courses).forEach(teacherCourse => {
+                                                if (teacherCourse.course_subject == param_subject) {
+                                                    var course = teacherCourse;
+                                                    var assessment = course["assesments"][0];
+                                                    console.log("assessment: ", assessment);
+                                                    responseObj["Assessment"] = assessment.title;
+                                                    responseObj["MaximumMarks"] = assessment.maximum_marks;
+                                                    var total_marks = 0;
+                                                    asyncCalls.push(this.scoreRepo.findWhere({ "student": student["_id"], "assessment": assessment._id }).then((scores) => {
+                                                        if (scores) {
+                                                            responseObj["Scored"] = true;
+                                                            Enumerable.from(scores).forEach(score => {
+                                                                console.log("score: ", score);
+                                                                Enumerable.from(assessment.questions).forEach(question => {
+                                                                    if (question["_id"].toString() == score.question.toString()) {
+                                                                        console.log("question: ", question);
+                                                                        if (saral) {
+                                                                            var q_no = question["question_no"];
+                                                                            if (responseObj.hasOwnProperty(q_no)) {
+                                                                                responseObj[q_no] += score.marks;
+                                                                            }
+                                                                            else {
+                                                                                responseObj[q_no] = score.marks;
+                                                                            }
+                                                                        }
+                                                                        else {
+                                                                            var text = question["text"];
+                                                                            responseObj[text] = score["marks"];
+                                                                            total_marks += score.marks;
+                                                                        }
+                                                                    }
+                                                                });
+                                                            });
+                                                        }
+                                                        responseObj["TotalMarks"] = total_marks;
+                                                        responseObj["TotalPercentage"] = (total_marks / assessment.maximum_marks) * 100;
+                                                        responseData.push(responseObj);
+                                                    }));
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                        return Q.allSettled(asyncCalls).then(res => {
+                            var finalReport = this.exportData(responseData, file_name);
+                            return Q.resolve(responseData);
+                        }).catch(err => {
+                            throw err;
+                        });
+                    }
+                    // else{
+                    //   return Q.reject("Teacher's school not found!")
+                    // }
+                });
+            }
+            // else{
+            //   return Q.reject("Teacher not found!")
+            // }
+        });
+    }
+    createPragatReport(report) {
+        var pragatCount = {
+            "SecondDivision": 0,
+            "FirstDivision": 0,
+            "Distinction": 0,
+            "Fail": 0
+        };
+        Enumerable.from(report).forEach(reportObj => {
+            if (reportObj["TotalPercentage"] > 40 && reportObj["TotalPercentage"] <= 60) {
+                reportObj["result"] = "Second Division";
+                pragatCount["SecondDivision"] += 1;
+            }
+            else if (reportObj["TotalPercentage"] > 60 && reportObj["TotalPercentage"] <= 80) {
+                reportObj["result"] = "First Division";
+                pragatCount["FirstDivision"] += 1;
+            }
+            else if (reportObj["TotalPercentage"] > 80 && reportObj["TotalPercentage"] <= 100) {
+                reportObj["result"] = "Distinction";
+                pragatCount["Distinction"] += 1;
+            }
+            else {
+                reportObj["result"] = "Fail";
+                pragatCount["Fail"] += 1;
+            }
+        });
+        var newResponse = report.filter(function (r) {
+            return r.Scored == true;
+        });
+        var total_scored = newResponse.length;
+        var percent_pragat = ((total_scored - pragatCount["Fail"]) / total_scored) * 100;
+        var percent_non_pragat = (pragatCount["Fail"] / total_scored) * 100;
+        var percent_distinction = (pragatCount["Distinction"] / total_scored) * 100;
+        var percent_FirstDivision = (pragatCount["FirstDivision"] / total_scored) * 100;
+        var percent_SecondDivision = (pragatCount["SecondDivision"] / total_scored) * 100;
+        var pragat_report = {
+            "Pragat Percent": percent_pragat,
+            "NonPragat Percent": percent_non_pragat,
+            "Distinction Percent": percent_distinction,
+            "FirstDivision Percent": percent_FirstDivision,
+            "SecondDivision Percent": percent_SecondDivision,
+            "TotalStudents Assessed": total_scored
+        };
+        return [pragat_report];
     }
 };
 __decorate([
@@ -117,6 +254,10 @@ __decorate([
     inject_1.inject(TeacherRepository), 
     __metadata('design:type', TeacherRepository.TeacherRepository)
 ], ReportService.prototype, "teacherRepo", void 0);
+__decorate([
+    inject_1.inject(CourseRepository), 
+    __metadata('design:type', CourseRepository.CourseRepository)
+], ReportService.prototype, "courseRepo", void 0);
 ReportService = __decorate([
     decorators_1.service({ singleton: true, serviceName: 'studentService' }), 
     __metadata('design:paramtypes', [])

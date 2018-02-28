@@ -17,6 +17,12 @@ answer: string
 @field()
 marks: string
 
+@field()
+question_no: string
+
+@field()
+sub_question_no: string
+
 }
 
 export default question;

@@ -41,6 +41,10 @@ __decorate([
 __decorate([
     decorators_1.field(), 
     __metadata('design:type', String)
+], course.prototype, "subject", void 0);
+__decorate([
+    decorators_1.field(), 
+    __metadata('design:type', String)
 ], course.prototype, "remarks", void 0);
 __decorate([
     decorators_1.field(), 
@@ -61,7 +65,7 @@ __decorate([
 __decorate([
     decorators_2.onetomany({ rel: 'test', itemType: test_1.test1, embedded: true, persist: true, eagerLoading: false }), 
     __metadata('design:type', Array)
-], course.prototype, "assesments", void 0);
+], course.prototype, "assessments", void 0);
 course = __decorate([
     decorators_1.document({ name: 'course', strict: _1.Strict.false }), 
     __metadata('design:paramtypes', [])

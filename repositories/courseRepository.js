@@ -17,6 +17,7 @@ CourseRepository = __decorate([
     decorators_1.repository({ path: 'course', model: course_1.course }), 
     __metadata('design:paramtypes', [])
 ], CourseRepository);
+exports.CourseRepository = CourseRepository;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CourseRepository;
 
