@@ -92,9 +92,41 @@ let ReportService = class ReportService {
     }
     exportData(params, file_name) {
         var json = params;
-        var xls = json2xls(json, { style: "styles.xml" });
+        var xls = json2xls(json); //, {style:"styles.xml"});
         return fs.writeFileSync(file_name, xls, 'binary');
     }
+    // formatExcelSheet(filename){
+    //   var Excel = require('exceljs');
+    //   var workbook = new Excel.Workbook();
+    //   workbook.xlsx.readFile("1.xlsx")
+    //     .then(function() {
+    //         var worksheet = workbook.getWorksheet(2);
+    //         var rows = worksheet.actualRowCount
+    //         let i;
+    //         // let val = worksheet.getColumn('O1')
+    //         for(i=2; i<=rows; i++){
+    //           var val = worksheet.getCell(i,15).value;
+    //           var row = worksheet.getRow(i);
+    //           if (val < 40){
+    //             row.fill = {
+    //               type: 'pattern',
+    //               pattern:'lightGray',
+    //               bgColor:{argb:'#F08080'}
+    //             };
+    //           }
+    //           else{
+    //             row.fill = {
+    //               type: 'pattern',
+    //               pattern:'darkTrellis',
+    //               fgColor:{argb:'FFFFFF00'},
+    //               bgColor:{argb:'FF0000FF'}
+    //             };
+    //           }
+    //           row.commit();
+    //         }            
+    //         return workbook.xlsx.writeFile("1.xlsx");
+    //     })
+    // }
     //params: teacher (_id) , subject, class
     createTeacherReport(param_teacher, param_standard, param_subject, saral) {
         var responseData = [];
@@ -149,7 +181,7 @@ let ReportService = class ReportService {
                                                                             }
                                                                         }
                                                                         else {
-                                                                            var text = question["text"];
+                                                                            var text = question["text"].split('.').join(" ");
                                                                             responseObj[text] = score["marks"];
                                                                             total_marks += score.marks;
                                                                         }
@@ -170,7 +202,7 @@ let ReportService = class ReportService {
                         });
                         return Q.allSettled(asyncCalls).then(res => {
                             var finalReport = this.exportData(responseData, file_name);
-                            return Q.resolve(responseData);
+                            return Q.resolve({ "filename": file_name, "data": responseData });
                         }).catch(err => {
                             throw err;
                         });
@@ -185,13 +217,14 @@ let ReportService = class ReportService {
             // }
         });
     }
-    createPragatReport(report) {
+    createPragatReport(obj) {
         var pragatCount = {
             "SecondDivision": 0,
             "FirstDivision": 0,
             "Distinction": 0,
             "Fail": 0
         };
+        var report = obj.data;
         Enumerable.from(report).forEach(reportObj => {
             if (reportObj["TotalPercentage"] > 40 && reportObj["TotalPercentage"] <= 60) {
                 reportObj["result"] = "Second Division";

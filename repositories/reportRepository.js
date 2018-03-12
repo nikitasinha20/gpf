@@ -14,6 +14,8 @@ const AuthorizationRepository_1 = require('./../security/AuthorizationRepository
 const inject_1 = require('nodedata/di/decorators/inject');
 const ReportService = require('../services/reportService');
 const Q = require('q');
+const fs = require('fs');
+process.env["SENDGRID_API_KEY"] = "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";
 let ReportRepository = class ReportRepository extends AuthorizationRepository_1.AuthorizationRepository {
     preCreate(params) {
         console.log("***********In precreate");
@@ -23,7 +25,7 @@ let ReportRepository = class ReportRepository extends AuthorizationRepository_1.
         return this.reportService.createReport(standard, subject);
     }
     doCreateTeacherReport(teacher, standard, subject, pragat, saral) {
-        return this.reportService.createTeacherReport(teacher, standard, subject, saral).then((report) => {
+        return this.reportService.createTeacherReport(teacher, standard, subject, saral).then(report => {
             if (pragat) {
                 return this.reportService.createPragatReport(report);
             }
@@ -31,6 +33,33 @@ let ReportRepository = class ReportRepository extends AuthorizationRepository_1.
                 return Q.resolve(report);
             }
         });
+    }
+    doSendMail(email, report_name) {
+        var data = fs.readFileSync(report_name, 'base64', function (err, data) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log(data);
+        });
+        const sgMail = require('@sendgrid/mail');
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        const msg = {
+            to: email,
+            from: 'reports@gyanprakash.org',
+            subject: 'Report',
+            text: 'Please find attached the report you had requested for. Have a Good day!',
+            html: '<strong>Please find attached the report you had requested for. Have a Good day!</strong>',
+            attachments: [
+                {
+                    content: data,
+                    filename: report_name,
+                    type: 'plain/text',
+                    disposition: 'attachment',
+                    contentId: report_name
+                },
+            ],
+        };
+        sgMail.send(msg);
     }
 };
 __decorate([

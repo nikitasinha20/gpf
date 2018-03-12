@@ -8,6 +8,8 @@
   },
   "author": "",
   "dependencies": {
+    "@sendgrid/mail": "^6.2.1",
+    "exceljs": "0.9.1",
     "amqplib": "0.5.1",
     "compression": "1.6.2",
     "download-file": "^0.1.5",
