@@ -15,7 +15,6 @@ const inject_1 = require('nodedata/di/decorators/inject');
 const ReportService = require('../services/reportService');
 const Q = require('q');
 const fs = require('fs');
-process.env["SENDGRID_API_KEY"] = "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";
 let ReportRepository = class ReportRepository extends AuthorizationRepository_1.AuthorizationRepository {
     preCreate(params) {
         console.log("***********In precreate");

@@ -8,7 +8,6 @@ import * as Enumerable from 'linq';
 import Q = require('q');
 import { entityAction, EntityActionParam } from "nodedata/core/decorators/entityAction";
 const fs = require('fs')
-process.env["SENDGRID_API_KEY"] = "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"
 
 @repository({ path: 'report', model: report })
 export class ReportRepository extends AuthorizationRepository {
