@@ -21,10 +21,15 @@ export class ReportRepository extends AuthorizationRepository {
     }
 
     doCreateReport(standard:string, subject:string ): Q.Promise<any>{
-        return this.reportService.createReport(standard, subject);
+        return this.reportService.createReport(standard, subject); 
     }
 
-    doCreateTeacherReport(teacher, standard:string, subject:string, pragat:boolean, saral:boolean ): Q.Promise<any>{
+    doCreateTeacherReport(params:any): Q.Promise<any>{
+        var teacher = params.teacher;
+        var standard = params.standard;
+        var subject = params.subject;
+        var pragat = params.pragat;
+        var saral = params.saral; 
         return this.reportService.createTeacherReport(teacher, standard, subject, saral).then(report =>{
             if(pragat){
                 return this.reportService.createPragatReport(report);
