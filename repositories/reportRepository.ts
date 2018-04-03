@@ -16,7 +16,6 @@ export class ReportRepository extends AuthorizationRepository {
     reportService: ReportService.ReportService;
 
     preCreate(params: EntityActionParam): Q.Promise<EntityActionParam> {
-        console.log("***********In precreate");
         return Q.resolve(params);
     }
 
@@ -40,33 +39,40 @@ export class ReportRepository extends AuthorizationRepository {
         });
     }
     
-    doSendMail(email:string, report_name:string){
-        var data = fs.readFileSync(report_name, 'base64', function (err,data) {
-            if (err) {
-              return console.log(err);
+    doSendMail(params){
+        var email = params.email;
+        var report_name = params.report_name
+        var mailer = require('nodemailer');
+
+        let transporter = mailer.createTransport({
+            "type": "SMTP",
+            "host": "smtp.gmail.com",
+            "secure": true,
+            "port": 465,
+            "auth": {
+              "user": "pragat.gpf@gmail.com",
+              "pass": "Password@12345"
             }
-            console.log(data);
         });
-        const sgMail = require('@sendgrid/mail');
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        const msg = {
-        to: email,
-        from: 'reports@gyanprakash.org',
-        subject: 'Report',
-        text: 'Please find attached the report you had requested for. Have a Good day!',
-        html: '<strong>Please find attached the report you had requested for. Have a Good day!</strong>',
-        attachments: [
-            {
-              content: data,
-              filename: report_name,
-              type: 'plain/text',
-              disposition: 'attachment',
-              contentId: report_name
-            },
-          ],
-        };
-        sgMail.send(msg);
+            
+        var mailOptions = {    
+            from: "reports@gyanprakash.org",
+            to: email,
+            subject: 'Report',
+            text: 'Please find attached the report you had requested for. Have a Good day!',
+            attachments: [{   
+                filename: report_name,
+                path: './' + report_name
+            }]
+        }
+
+        transporter.sendMail(mailOptions, function(err, success) {
+            if (err) {
+                // Handle error
+                console.log("Error: ", err)
+            }
+            console.log("Mail sent with attachment " + report_name + " to " + email)
+        });
     }
-    
 }
 export default ReportRepository;

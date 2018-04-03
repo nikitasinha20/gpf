@@ -17,7 +17,6 @@ const Q = require('q');
 const fs = require('fs');
 let ReportRepository = class ReportRepository extends AuthorizationRepository_1.AuthorizationRepository {
     preCreate(params) {
-        console.log("***********In precreate");
         return Q.resolve(params);
     }
     doCreateReport(standard, subject) {
@@ -38,32 +37,37 @@ let ReportRepository = class ReportRepository extends AuthorizationRepository_1.
             }
         });
     }
-    doSendMail(email, report_name) {
-        var data = fs.readFileSync(report_name, 'base64', function (err, data) {
-            if (err) {
-                return console.log(err);
+    doSendMail(params) {
+        var email = params.email;
+        var report_name = params.report_name;
+        var mailer = require('nodemailer');
+        let transporter = mailer.createTransport({
+            "type": "SMTP",
+            "host": "smtp.gmail.com",
+            "secure": true,
+            "port": 465,
+            "auth": {
+                "user": "pragat.gpf@gmail.com",
+                "pass": "Password@12345"
             }
-            console.log(data);
         });
-        const sgMail = require('@sendgrid/mail');
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-        const msg = {
+        var mailOptions = {
+            from: "reports@gyanprakash.org",
             to: email,
-            from: 'reports@gyanprakash.org',
             subject: 'Report',
             text: 'Please find attached the report you had requested for. Have a Good day!',
-            html: '<strong>Please find attached the report you had requested for. Have a Good day!</strong>',
-            attachments: [
-                {
-                    content: data,
+            attachments: [{
                     filename: report_name,
-                    type: 'plain/text',
-                    disposition: 'attachment',
-                    contentId: report_name
-                },
-            ],
+                    path: './' + report_name
+                }]
         };
-        sgMail.send(msg);
+        transporter.sendMail(mailOptions, function (err, success) {
+            if (err) {
+                // Handle error
+                console.log("Error: ", err);
+            }
+            console.log("Mail sent with attachment " + report_name + " to " + email);
+        });
     }
 };
 __decorate([

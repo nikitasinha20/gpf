@@ -95,39 +95,6 @@ let ReportService = class ReportService {
         var xls = json2xls(json); //, {style:"styles.xml"});
         return fs.writeFileSync(file_name, xls, 'binary');
     }
-    // formatExcelSheet(filename){
-    //   var Excel = require('exceljs');
-    //   var workbook = new Excel.Workbook();
-    //   workbook.xlsx.readFile("1.xlsx")
-    //     .then(function() {
-    //         var worksheet = workbook.getWorksheet(2);
-    //         var rows = worksheet.actualRowCount
-    //         let i;
-    //         // let val = worksheet.getColumn('O1')
-    //         for(i=2; i<=rows; i++){
-    //           var val = worksheet.getCell(i,15).value;
-    //           var row = worksheet.getRow(i);
-    //           if (val < 40){
-    //             row.fill = {
-    //               type: 'pattern',
-    //               pattern:'lightGray',
-    //               bgColor:{argb:'#F08080'}
-    //             };
-    //           }
-    //           else{
-    //             row.fill = {
-    //               type: 'pattern',
-    //               pattern:'darkTrellis',
-    //               fgColor:{argb:'FFFFFF00'},
-    //               bgColor:{argb:'FF0000FF'}
-    //             };
-    //           }
-    //           row.commit();
-    //         }            
-    //         return workbook.xlsx.writeFile("1.xlsx");
-    //     })
-    // }
-    //params: teacher (_id) , subject, class
     createTeacherReport(param_teacher, param_standard, param_subject, saral) {
         var responseData = [];
         var file_name = param_teacher + "_" + param_standard + "_" + param_subject + ".xlsx";
@@ -164,7 +131,7 @@ let ReportService = class ReportService {
                                                     responseObj["MaximumMarks"] = assessment.maximum_marks;
                                                     var total_marks = 0;
                                                     asyncCalls.push(this.scoreRepo.findWhere({ "student": student["_id"], "assessment": assessment._id }).then((scores) => {
-                                                        if (scores) {
+                                                        if (scores && scores.length) {
                                                             responseObj["Scored"] = true;
                                                             Enumerable.from(scores).forEach(score => {
                                                                 console.log("score: ", score);
@@ -188,6 +155,9 @@ let ReportService = class ReportService {
                                                                     }
                                                                 });
                                                             });
+                                                        }
+                                                        else {
+                                                            responseObj["Scored"] = false;
                                                         }
                                                         responseObj["TotalMarks"] = total_marks;
                                                         responseObj["TotalPercentage"] = (total_marks / assessment.maximum_marks) * 100;
