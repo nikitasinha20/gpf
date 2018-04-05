@@ -208,7 +208,7 @@ let ReportService = class ReportService {
                 reportObj["result"] = "Distinction";
                 pragatCount["Distinction"] += 1;
             }
-            else {
+            else if (reportObj["Scored"]) {
                 reportObj["result"] = "Fail";
                 pragatCount["Fail"] += 1;
             }
