@@ -58,7 +58,7 @@ __decorate([
     __metadata('design:type', Array)
 ], school.prototype, "terms", void 0);
 school = __decorate([
-    decorators_1.document({ name: 'school', strict: _1.Strict.throw }), 
+    decorators_1.document({ name: 'school', strict: _1.Strict.false }), 
     __metadata('design:paramtypes', [])
 ], school);
 exports.school = school;

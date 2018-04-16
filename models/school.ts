@@ -8,7 +8,7 @@ import {myclass} from './myclass';
 import {term} from './term';
 import {onetomany, manytoone, manytomany, onetoone} from 'nodedata/core/decorators';
 
-@document({ name: 'school', strict: Strict.throw })
+@document({ name: 'school', strict: Strict.false })
 export class school extends baseModel {
 
     @field()
