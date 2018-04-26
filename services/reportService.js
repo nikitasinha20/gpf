@@ -150,7 +150,7 @@ let ReportService = class ReportService {
                                                                         else {
                                                                             var text = question["text"].split('.').join(" ");
                                                                             responseObj[text] = score["marks"];
-                                                                            total_marks += score.marks;
+                                                                            total_marks += parseInt(score.marks);
                                                                         }
                                                                     }
                                                                 });

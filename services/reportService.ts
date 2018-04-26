@@ -22,6 +22,7 @@ import Q = require('q');
 import student from '../models/student';
 import { score } from '../models/score';
 import { question } from '../models/question';
+import { course } from '../models/course';
 
 @service({ singleton: true, serviceName: 'studentService' })
 export class ReportService {
@@ -158,7 +159,7 @@ export class ReportService {
                             responseObj["Assessment"] = assessment.title;
                             responseObj["MaximumMarks"] = assessment.maximum_marks;
                             var total_marks = 0
-                            asyncCalls.push(this.scoreRepo.findWhere({"student": student["_id"], "assessment": assessment._id}).then((scores: Array<score>) => {
+                            asyncCalls.push(this.scoreRepo.findWhere({"student": student["_id"], "assessment": assessment._id}).then((scores: Array<any>) => {
                               if(scores && scores.length){
                                 responseObj["Scored"] = true;
                                 Enumerable.from(scores).forEach(score =>{
@@ -178,7 +179,7 @@ export class ReportService {
                                       else{
                                         var text = question["text"].split('.').join(" ");
                                         responseObj[text] = score["marks"];
-                                        total_marks += score.marks;
+                                        total_marks +=  parseInt(score.marks);
                                       }
                                       
                                     }
@@ -243,27 +244,27 @@ export class ReportService {
             reportObj["result"] = "Fail";
             pragatCount["Fail"] += 1
         }
-    });
-    var newResponse = report.filter(function (r) {
-        return r.Scored == true
-    });
-    var total_scored = newResponse.length
-    var percent_pragat = ((total_scored - pragatCount["Fail"]) / total_scored) * 100
-    var percent_non_pragat = (pragatCount["Fail"] / total_scored) * 100
-    var percent_distinction = (pragatCount["Distinction"] / total_scored) * 100
-    var percent_FirstDivision = (pragatCount["FirstDivision"] / total_scored) * 100
-    var percent_SecondDivision = (pragatCount["SecondDivision"] / total_scored) * 100
-    var pragat_report = {
-        "Pragat Percent" : percent_pragat,
-        "NonPragat Percent" : percent_non_pragat,
-        "Distinction Percent" : percent_distinction,
-        "FirstDivision Percent" : percent_FirstDivision,
-        "SecondDivision Percent" : percent_SecondDivision,
-        "TotalStudents Assessed" : total_scored
+      });
+      var newResponse = report.filter(function (r) {
+          return r.Scored == true
+      });
+      var total_scored = newResponse.length
+      var percent_pragat = ((total_scored - pragatCount["Fail"]) / total_scored) * 100
+      var percent_non_pragat = (pragatCount["Fail"] / total_scored) * 100
+      var percent_distinction = (pragatCount["Distinction"] / total_scored) * 100
+      var percent_FirstDivision = (pragatCount["FirstDivision"] / total_scored) * 100
+      var percent_SecondDivision = (pragatCount["SecondDivision"] / total_scored) * 100
+      var pragat_report = {
+          "Pragat Percent" : percent_pragat,
+          "NonPragat Percent" : percent_non_pragat,
+          "Distinction Percent" : percent_distinction,
+          "FirstDivision Percent" : percent_FirstDivision,
+          "SecondDivision Percent" : percent_SecondDivision,
+          "TotalStudents Assessed" : total_scored
+      }
+      return [pragat_report]
     }
-    return [pragat_report]
-    }
- 
+
 }
 
 export default ReportService;
